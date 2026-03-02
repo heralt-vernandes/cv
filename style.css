@@ -6,18 +6,17 @@ body {
   color: #e2e8f0;
 }
 
-/* ================= NAVBAR ================= */
 nav {
   position: fixed;
   width: 100%;
   top: 0;
   left: 0;
-  background: rgba(15, 23, 42, 0.98);
+  background: rgba(15, 23, 42, 0.95);
   backdrop-filter: blur(8px);
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 18px 40px;
+  padding: 20px 60px;
   border-bottom: 1px solid #1e293b;
   z-index: 1000;
 }
@@ -25,13 +24,12 @@ nav {
 nav h2 {
   color: #38bdf8;
   font-size: 18px;
-  white-space: nowrap;
 }
 
 nav ul {
   list-style: none;
   display: flex;
-  gap: 28px;
+  gap: 30px;
 }
 
 nav ul li a {
@@ -39,24 +37,22 @@ nav ul li a {
   color: #cbd5e1;
   font-size: 14px;
   transition: 0.3s ease;
-  white-space: nowrap;
 }
 
 nav ul li a:hover {
   color: #38bdf8;
 }
 
-/* ================= HERO ================= */
 .hero {
   min-height: 100vh;
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 160px 20px 80px; /* extra top space for fixed nav */
+  padding: 140px 20px 60px;
 }
 
 .hero-content {
-  max-width: 1100px;
+  max-width: 1000px;
   width: 100%;
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -68,7 +64,6 @@ nav ul li a:hover {
   font-size: 42px;
   color: white;
   margin-bottom: 15px;
-  line-height: 1.2;
 }
 
 .left h1 span {
@@ -79,13 +74,11 @@ nav ul li a:hover {
   color: #94a3b8;
   line-height: 1.7;
   margin-bottom: 30px;
-  font-size: 16px;
 }
 
 .buttons {
   display: flex;
   gap: 15px;
-  flex-wrap: wrap;
 }
 
 .btn {
@@ -95,7 +88,6 @@ nav ul li a:hover {
   font-weight: 600;
   text-decoration: none;
   transition: 0.3s ease;
-  display: inline-block;
 }
 
 .btn-primary {
@@ -117,7 +109,6 @@ nav ul li a:hover {
   color: #38bdf8;
 }
 
-/* ================= CARD ================= */
 .card {
   background: #1e293b;
   border: 1px solid #334155;
@@ -140,97 +131,21 @@ nav ul li a:hover {
   color: #cbd5e1;
 }
 
-/* ================= FOOTER ================= */
 footer {
   text-align: center;
-  padding: 30px 20px;
+  padding: 30px;
   border-top: 1px solid #1e293b;
   font-size: 13px;
   color: #64748b;
 }
 
-/* ================= RESPONSIVE ================= */
-
-/* Laptop */
-@media (max-width: 1024px) {
-  nav {
-    padding: 18px 25px;
-  }
-
+@media(max-width: 900px) {
   .hero-content {
     grid-template-columns: 1fr;
-    gap: 40px;
     text-align: center;
-  }
-
-  .left h1 {
-    font-size: 36px;
   }
 
   .buttons {
     justify-content: center;
-  }
-}
-
-/* Tablet */
-@media (max-width: 768px) {
-  nav {
-    flex-direction: column;
-    align-items: center;
-    gap: 12px;
-    padding: 18px 20px;
-  }
-
-  nav ul {
-    flex-wrap: wrap;
-    justify-content: center;
-    gap: 16px;
-  }
-
-  .hero {
-    padding: 190px 20px 80px;
-  }
-
-  .left h1 {
-    font-size: 30px;
-  }
-
-  .left p {
-    font-size: 15px;
-  }
-
-  .card {
-    padding: 28px;
-  }
-}
-
-/* Mobile */
-@media (max-width: 480px) {
-  nav ul {
-    flex-direction: column;
-    align-items: center;
-    gap: 12px;
-  }
-
-  .hero {
-    padding: 220px 18px 70px;
-  }
-
-  .left h1 {
-    font-size: 24px;
-  }
-
-  .left p {
-    font-size: 14px;
-  }
-
-  .buttons {
-    flex-direction: column;
-    width: 100%;
-  }
-
-  .btn {
-    width: 100%;
-    text-align: center;
   }
 }
