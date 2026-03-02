@@ -1,162 +1,169 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Gerald | Network Engineer</title>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-<style>
-*{margin:0;padding:0;box-sizing:border-box;font-family:'Inter',sans-serif}
-body{
-  background:#0b1220;
-  color:#e5e7eb;
-  display:flex;
-  justify-content:center;
-  align-items:center;
-  min-height:100vh;
-  padding:20px;
-}
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Gerald Ibrani | Network Engineer</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: 'Inter', sans-serif;
+      background: #0f172a;
+      color: #e2e8f0;
+    }
+    nav {
+      position: fixed;
+      width: 100%;
+      top: 0;
+      left: 0;
+      background: rgba(15, 23, 42, 0.95);
+      backdrop-filter: blur(8px);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 20px 60px;
+      border-bottom: 1px solid #1e293b;
+      z-index: 1000;
+    }
+    nav h2 { color: #38bdf8; font-size: 18px; }
+    nav ul { list-style: none; display: flex; gap: 30px; }
+    nav ul li a {
+      text-decoration: none;
+      color: #cbd5e1;
+      font-size: 14px;
+      transition: 0.3s ease;
+    }
+    nav ul li a:hover { color: #38bdf8; }
 
-.card{
-  background:#111827;
-  width:100%;
-  max-width:900px;
-  border-radius:20px;
-  padding:40px;
-  box-shadow:0 20px 40px rgba(0,0,0,0.4);
-  border:1px solid #1f2937;
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-  gap:40px;
-  transition:0.3s;
-}
-
-.card:hover{
-  transform:translateY(-4px);
-}
-
-.left{
-  display:flex;
-  align-items:center;
-  gap:25px;
-}
-
-.profile-circle{
-  width:120px;
-  height:120px;
-  border-radius:50%;
-  background:#1f2937;
-  display:flex;
-  justify-content:center;
-  align-items:center;
-  font-size:42px;
-  color:#38bdf8;
-  font-weight:700;
-}
-
-.info h1{
-  font-size:26px;
-  margin-bottom:6px;
-}
-
-.role{
-  font-size:14px;
-  color:#38bdf8;
-  margin-bottom:10px;
-}
-
-.description{
-  font-size:14px;
-  color:#9ca3af;
-  max-width:400px;
-}
-
-.right{
-  text-align:right;
-}
-
-.buttons a{
-  display:block;
-  margin:8px 0;
-  padding:10px 20px;
-  border-radius:8px;
-  text-decoration:none;
-  font-size:13px;
-  font-weight:600;
-  background:#38bdf8;
-  color:#0b1220;
-  transition:0.3s;
-}
-
-.buttons a:hover{
-  background:#0ea5e9;
-}
-
-.socials{
-  margin-top:15px;
-}
-
-.socials a{
-  color:#9ca3af;
-  margin-left:15px;
-  font-size:18px;
-}
-
-.socials a:hover{
-  color:#38bdf8;
-}
-
-@media(max-width:768px){
-  .card{
-    flex-direction:column;
-    text-align:center;
-  }
-  .left{
-    flex-direction:column;
-  }
-  .right{
-    text-align:center;
-    margin-top:20px;
-  }
-  .description{
-    max-width:100%;
-  }
-}
-
-</style>
+    .hero {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 140px 20px 60px;
+    }
+    .hero-content {
+      max-width: 1000px;
+      width: 100%;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 60px;
+      align-items: center;
+    }
+    .left h1 {
+      font-size: 42px;
+      color: white;
+      margin-bottom: 15px;
+    }
+    .left h1 span { color: #38bdf8; }
+    .left p {
+      color: #94a3b8;
+      line-height: 1.7;
+      margin-bottom: 30px;
+    }
+    .buttons {
+      display: flex;
+      gap: 15px;
+    }
+    .btn {
+      padding: 12px 22px;
+      border-radius: 8px;
+      font-size: 14px;
+      font-weight: 600;
+      text-decoration: none;
+      transition: 0.3s ease;
+    }
+    .btn-primary {
+      background: #38bdf8;
+      color: #0f172a;
+    }
+    .btn-primary:hover { opacity: 0.9; }
+    .btn-outline {
+      border: 1px solid #334155;
+      color: #cbd5e1;
+    }
+    .btn-outline:hover {
+      border-color: #38bdf8;
+      color: #38bdf8;
+    }
+    .card {
+      background: #1e293b;
+      border: 1px solid #334155;
+      padding: 40px;
+      border-radius: 16px;
+    }
+    .card h3 {
+      color: #38bdf8;
+      margin-bottom: 20px;
+      font-size: 18px;
+    }
+    .card ul {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      font-size: 14px;
+      color: #cbd5e1;
+    }
+    footer {
+      text-align: center;
+      padding: 30px;
+      border-top: 1px solid #1e293b;
+      font-size: 13px;
+      color: #64748b;
+    }
+    @media(max-width: 900px) {
+      .hero-content { grid-template-columns: 1fr; text-align: center; }
+      .buttons { justify-content: center; }
+    }
+  </style>
 </head>
 <body>
 
-<div class="card">
+<nav>
+  <h2>Gerald</h2>
+  <ul>
+    <li><a href="about.html">About</a></li>
+    <li><a href="skills.html">Skills</a></li>
+    <li><a href="experience.html">Experience</a></li>
+    <li><a href="contact.html">Contact</a></li>
+  </ul>
+</nav>
 
-  <div class="left">
-    <div class="profile-circle">GI</div>
-    <div class="info">
-      <h1>Gerald Ibrani</h1>
-      <div class="role">Network Engineer & Linux System Administrator</div>
-      <div class="description">
-        Specialized in routing architecture, Linux server deployment, ISP field operations, and secure network infrastructure design.
+<section class="hero">
+  <div class="hero-content">
+    <div class="left">
+      <h1>Hi, I'm <span>Gerald Ibrani</span></h1>
+      <p>
+        SMK graduate majoring in Computer and Network Engineering.
+        Experienced in MikroTik routing, Linux server administration,
+        ISP field operations, fiber optic handling, and enterprise network
+        infrastructure including firewall configuration and network security management.
+      </p>
+      <div class="buttons">
+        <a href="experience.html" class="btn btn-primary">View Experience</a>
+        <a href="https://github.com/heralt-vernandes" target="_blank" class="btn btn-outline">GitHub</a>
       </div>
     </div>
-  </div>
 
-  <div class="right">
-    <div class="buttons">
-      <a href="about.html">About</a>
-      <a href="skills.html">Skills</a>
-      <a href="experience.html">Experience</a>
-      <a href="contact.html">Contact</a>
-    </div>
-
-    <div class="socials">
-      <a href="mailto:geraldibrani@geraldstudio.my.id"><i class="fa-solid fa-envelope"></i></a>
-      <a href="https://github.com/heralt-vernandes" target="_blank"><i class="fa-brands fa-github"></i></a>
+    <div class="card">
+      <h3>Core Expertise</h3>
+      <ul>
+        <li>• Network Routing (MikroTik)</li>
+        <li>• Linux Server Administration</li>
+        <li>• ISP Field Technician Experience</li>
+        <li>• Fiber Optic Installation & Tools</li>
+        <li>• Network Security & Firewall Management</li>
+        <li>• Windows Server & System Support</li>
+      </ul>
     </div>
   </div>
+</section>
 
-</div>
+<footer>
+  © 2026 Gerald Ibrani — Network Engineer & Linux System Administrator
+</footer>
 
 </body>
 </html>
