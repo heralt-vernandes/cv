@@ -4,8 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Gerald Ibrani | Network Engineer</title>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="style.css" />
+  <link rel="stylesheet" href="style.css" />
 </head>
 <body>
 
@@ -21,13 +20,12 @@
 
 <section class="hero">
   <div class="hero-content">
-    <div class="left">
+    <div class="left fade-up">
       <h1>Hi, I'm <span>Gerald Ibrani</span></h1>
+      <p id="typing" style="margin-top:10px; font-weight:600; color:#38bdf8;"></p>
       <p>
-        SMK graduate majoring in Computer and Network Engineering.
-        Experienced in MikroTik routing, Linux server administration,
-        ISP field operations, fiber optic handling, and enterprise network
-        infrastructure including firewall configuration and network security management.
+        Experienced in network routing, Linux and Windows server administration,
+        infrastructure deployment, and enterprise network security implementation.
       </p>
       <div class="buttons">
         <a href="experience.html" class="btn btn-primary">View Experience</a>
@@ -35,23 +33,51 @@
       </div>
     </div>
 
-    <div class="card">
+    <div class="card fade-up" style="animation-delay:0.3s;">
       <h3>Core Expertise</h3>
       <ul>
-        <li>• Network Routing (MikroTik)</li>
-        <li>• Linux Server Administration</li>
-        <li>• ISP Field Technician Experience</li>
-        <li>• Fiber Optic Installation & Tools</li>
-        <li>• Network Security & Firewall Management</li>
-        <li>• Windows Server & System Support</li>
+        <li>Network Routing (MikroTik)</li>
+        <li>Linux Server Administration</li>
+        <li>Windows Server & System Support</li>
+        <li>Network Security & Firewall Management</li>
+        <li>Fiber Optic Deployment</li>
       </ul>
     </div>
   </div>
 </section>
 
 <footer>
-  © 2026 Gerald Ibrani — Network Engineer & Linux System Administrator
+  © 2026 Gerald Ibrani — Infrastructure & Network Specialist
 </footer>
+
+<script>
+// Fade-up animation trigger
+window.addEventListener("load", () => {
+  document.querySelectorAll(".fade-up").forEach(el => {
+    el.style.opacity = "0";
+    el.style.transform = "translateY(30px)";
+    setTimeout(() => {
+      el.style.transition = "all 0.8s ease";
+      el.style.opacity = "1";
+      el.style.transform = "translateY(0)";
+    }, 200);
+  });
+
+  // Typing effect
+  const text = "Infrastructure & Network Engineer";
+  const typingEl = document.getElementById("typing");
+  let index = 0;
+
+  function type() {
+    if (index < text.length) {
+      typingEl.innerHTML += text.charAt(index);
+      index++;
+      setTimeout(type, 60);
+    }
+  }
+  type();
+});
+</script>
 
 </body>
 </html>
