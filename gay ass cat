@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <title>Mini North - Advanced Prototype</title>
+    <style>
+        body { margin: 0; background: #1a1a1a; display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100vh; color: #ecf0f1; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; overflow: hidden; }
+        canvas { background: #1e3799; border: 5px solid #4a69bd; border-radius: 12px; box-shadow: 0 10px 30px rgba(0,0,0,0.5); cursor: pointer; }
+        .ui { position: absolute; top: 30px; text-align: center; pointer-events: none; text-shadow: 2px 2px 4px rgba(0,0,0,0.5); }
+        .controls { position: absolute; bottom: 30px; background: rgba(0,0,0,0.6); padding: 15px; border-radius: 10px; font-size: 0.9em; }
+    </style>
+</head>
+<body>
+    <div class="ui">
+        <h1 style="margin:0; letter-spacing: 3px;">MINI NORTH</h1>
+        <p id="stats">Wave: 1 | Skor: 0</p>
+    </div>
+    <div class="controls">
+        <b>Kontrol:</b> Klik Unit (Kotak) -> Klik Tanah (Kuning) untuk pindah.<br>
+        🛡️ Biru: Infantry (Seimbang) | 🏹 Hijau: Archer (Range)
+    </div>
+    <canvas id="gameCanvas"></canvas>
+
+<script>
+const canvas = document.getElementById('gameCanvas');
+const ctx = canvas.getContext('2d');
+canvas.width = 900;
+canvas.height = 650;
+
+// Konfigurasi Game
+let score = 0;
+let wave = 1;
+let selectedUnit = null;
+const tileSize = 60;
+
+// Definisi Pulau (Grid 5x5 di tengah)
+const islandX = 300;
+const islandY = 200;
+const gridRows = 5;
+const gridCols = 5;
+
+// Unit Classes
+const CLASSES = {
+    INFANTRY: { color: '#3498db', range: 40, name: 'Shield' },
+    ARCHER: { color: '#2ecc71', range: 150, name: 'Archer' }
+};
+
+// Data Pasukan Pemain
+const units = [
+    { x: 2, y: 2, targetX: 2, targetY: 2, type: CLASSES.INFANTRY, selected: false, id: 1 },
+    { x: 2, y: 3, targetX: 2, targetY: 3, type: CLASSES.ARCHER, selected: false, id: 2 }
+];
+
+let enemies = [];
+let boats = [];
+
+// Fungsi Spawn Perahu & Musuh
+function spawnWave() {
+    const sides = ['TOP', 'BOTTOM', 'LEFT', 'RIGHT'];
+    const side = sides[Math.floor(Math.random() * sides.length)];
+    let bx, by;
+
+    if(side === 'TOP') { bx = Math.random() * canvas.width; by = -50; }
+    else if(side === 'BOTTOM') { bx = Math.random() * canvas.width; by = canvas.height + 50; }
+    else if(side === 'LEFT') { bx = -50; by = Math.random() * canvas.height; }
+    else { bx = canvas.width + 50; by = Math.random() * canvas.height; }
+
+    boats.push({
+        x: bx, y: by,
+        targetX: islandX + (Math.random() * gridCols * tileSize),
+        targetY: islandY + (Math.random() * gridRows * tileSize),
+        landed: false,
+        passengers: 2 + Math.floor(wave / 2)
+    });
+}
+
+setInterval(() => { if(boats.length < 3) spawnWave(); }, 5000);
+
+// Input Handling
+canvas.addEventListener('mousedown', (e) => {
+    const rect = canvas.getBoundingClientRect();
+    const mx = e.clientX - rect.left;
+    const my = e.clientY - rect.top;
+
+    // Cek Klik Unit
+    let found = false;
+    units.forEach(u => {
+        const px = islandX + u.x * tileSize + tileSize/2;
+        const py = islandY + u.y * tileSize + tileSize/2;
+        if (Math.hypot(px - mx, py - my) < 25) {
+            units.forEach(un => un.selected = false);
+            u.selected = true;
+            selectedUnit = u;
+            found = true;
+        }
+    });
+
+    // Cek Klik Grid (Pindah)
+    if (!found && selectedUnit) {
+        const gx = Math.floor((mx - islandX) / tileSize);
+        const gy = Math.floor((my - islandY) / tileSize);
+
+        if (gx >= 0 && gx < gridCols && gy >= 0 && gy < gridRows) {
+            selectedUnit.targetX = gx;
+            selectedUnit.targetY = gy;
+        }
+    }
+});
+
+function update() {
+    // Smooth Movement Unit
+    units.forEach(u => {
+        u.x += (u.targetX - u.x) * 0.1;
+        u.y += (u.targetY - u.y) * 0.1;
+
+        // Auto Attack untuk Archer
+        if(u.type === CLASSES.ARCHER) {
+            enemies.forEach((en, i) => {
+                const dist = Math.hypot((islandX + u.x * tileSize) - en.x, (islandY + u.y * tileSize) - en.y);
+                if(dist < u.type.range && Math.random() < 0.02) { // Attack chance
+                    enemies.splice(i, 1);
+                    score += 5;
+                }
+            });
+        }
+    });
+
+    // Boat logic
+    boats.forEach((b, bi) => {
+        const dist = Math.hypot(b.targetX - b.x, b.targetY - b.y);
+        if (dist > 5 && !b.landed) {
+            b.x += (b.targetX - b.x) * 0.01;
+            b.y += (b.targetY - b.y) * 0.01;
+        } else if (!b.landed) {
+            b.landed = true;
+            for(let i=0; i<b.passengers; i++) {
+                enemies.push({ x: b.x, y: b.y, speed: 0.4 + (wave*0.1) });
+            }
+            setTimeout(() => boats.splice(bi, 1), 2000);
+        }
+    });
+
+    // Enemy logic
+    enemies.forEach((en, ei) => {
+        const centerX = islandX + (gridCols*tileSize)/2;
+        const centerY = islandY + (gridRows*tileSize)/2;
+        const dx = centerX - en.x;
+        const dy = centerY - en.y;
+        const dist = Math.hypot(dx, dy);
+        
+        en.x += (dx/dist) * en.speed;
+        en.y += (dy/dist) * en.speed;
+
+        // Cek tabrakan dengan Melee Unit
+        units.forEach(u => {
+            const ux = islandX + u.x * tileSize + tileSize/2;
+            const uy = islandY + u.y * tileSize + tileSize/2;
+            if(Math.hypot(ux - en.x, uy - en.y) < 30) {
+                enemies.splice(ei, 1);
+                score += 10;
+            }
+        });
+
+        if(dist < 10) {
+            alert("Pulau dijarah! Skor: " + score);
+            location.reload();
+        }
+    });
+
+    document.getElementById('stats').innerText = `Wave: ${wave} | Skor: ${score}`;
+    if(score > wave * 100) wave++;
+}
+
+function draw() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+    // Grid Pulau
+    for(let i=0; i<gridCols; i++) {
+        for(let j=0; j<gridRows; j++) {
+            ctx.fillStyle = '#f1c40f'; // Pasir
+            ctx.fillRect(islandX + i*tileSize, islandY + j*tileSize, tileSize-2, tileSize-2);
+        }
+    }
+
+    // Perahu
+    ctx.fillStyle = '#7f8c8d';
+    boats.forEach(b => {
+        ctx.fillRect(b.x - 20, b.y - 10, 40, 20);
+    });
+
+    // Musuh
+    ctx.fillStyle = '#c0392b';
+    enemies.forEach(en => {
+        ctx.beginPath();
+        ctx.arc(en.x, en.y, 8, 0, Math.PI*2);
+        ctx.fill();
+    });
+
+    // Units
+    units.forEach(u => {
+        const ux = islandX + u.x * tileSize + tileSize/2;
+        const uy = islandY + u.y * tileSize + tileSize/2;
+        
+        ctx.fillStyle = u.type.color;
+        ctx.fillRect(ux - 15, uy - 15, 30, 30);
+        
+        if(u.selected) {
+            ctx.strokeStyle = 'white';
+            ctx.lineWidth = 3;
+            ctx.strokeRect(ux - 18, uy - 18, 36, 36);
+        }
+    });
+
+    requestAnimationFrame(() => { update(); draw(); });
+}
+
+draw();
+</script>
+</body>
+</html>
